@@ -29,7 +29,7 @@ from tqdm import tqdm
 from model_simulated_RGB101_cdcl_pascal import get_testing_model_resnet101
 from human_seg.pascal_voc_human_seg_gt_7parts import human_seg_combine_argmax, human_seg_combine_argmax_rgb
 from keras.utils import multi_gpu_model
-
+import tqdm
 human_part = [0,1,2,3,4,5,6]
 human_ori_part = [0,1,2,3,4,5,6]
 seg_num = 7 # current model supports 7 parts only
@@ -181,7 +181,7 @@ if __name__ == '__main__':
     # TODO: Optimize this code.
 
     # generate image with body parts
-    for filename in os.listdir(args.input_folder):
+    for filename in tqdm.tqdm(sorted(os.listdir(args.input_folder))):
         if filename.endswith(".png") or filename.endswith(".jpg"):
             print(args.input_folder+'/'+filename)
             seg = process(args.input_folder+'/'+filename, params, model_params)
