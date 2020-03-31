@@ -152,6 +152,13 @@ def process (input_image, params, model_params):
 
     return seg_avg
 
+def remove_background(src):
+    tmp = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
+    _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+    b, g, r = cv2.split(src)
+    rgba = [b,g,r, alpha]
+    dst = cv2.merge(rgba,4)
+    return dst
 
 if __name__ == '__main__':
 
@@ -191,9 +198,14 @@ if __name__ == '__main__':
             seg_max_thres = (seg_max > 0.1).astype(np.uint8)
             seg_argmax *= seg_max_thres
             seg_canvas = human_seg_combine_argmax_rgb(seg_argmax)
+            # Only need the segmented mask (no need to check which part of
+            # the image is human afterwards.)
+     
             cur_canvas = cv2.imread(args.input_folder+'/'+filename)
-            canvas = cv2.addWeighted(seg_canvas, 0.6, cur_canvas, 0.4, 0)
-            filename = '%s/%s.jpg'%(args.output_folder,'seg_'+filename)
+            canvas = cv2.addWeighted(seg_canvas, 1, cur_canvas, 0.0, 0)
+            filename = '%s/%s.png'%(args.output_folder,'seg_'+filename)
             cv2.imwrite(filename, canvas) 
+
+
 
 
