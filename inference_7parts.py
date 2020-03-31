@@ -28,7 +28,7 @@ from PIL import Image
 from tqdm import tqdm
 from model_simulated_RGB101_cdcl_pascal import get_testing_model_resnet101
 from human_seg.pascal_voc_human_seg_gt_7parts import human_seg_combine_argmax, human_seg_combine_argmax_rgb
-
+from keras.utils import multi_gpu_model
 
 human_part = [0,1,2,3,4,5,6]
 human_ori_part = [0,1,2,3,4,5,6]
@@ -161,16 +161,25 @@ if __name__ == '__main__':
     print('start processing...')
     # load model
     model = get_testing_model_resnet101() 
+    # Enabling multiple gpus
+   
     model.load_weights(keras_weights_file)
     params, model_params = config_reader()
+    try: 
+        model = multi_gpu_model(model, gpus=args.gpus)
+        print("Running on multiple gpus.")
+    except:
+        print("Unable to use multiple gpus, using 1.")
 
+    print(model.summary())
     scale_list = []
     for item in args.scale:
         scale_list.append(float(item))
 
     params['scale_search'] = scale_list
 
-   
+    # TODO: Optimize this code.
+
     # generate image with body parts
     for filename in os.listdir(args.input_folder):
         if filename.endswith(".png") or filename.endswith(".jpg"):
