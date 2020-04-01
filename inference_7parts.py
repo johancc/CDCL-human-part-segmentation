@@ -25,7 +25,6 @@ import code
 import copy
 import scipy.ndimage as sn
 from PIL import Image
-from tqdm import tqdm
 from model_simulated_RGB101_cdcl_pascal import get_testing_model_resnet101
 from human_seg.pascal_voc_human_seg_gt_7parts import human_seg_combine_argmax, human_seg_combine_argmax_rgb
 from keras.utils import multi_gpu_model

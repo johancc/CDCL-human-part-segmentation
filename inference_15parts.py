@@ -25,10 +25,9 @@ import code
 import copy
 import scipy.ndimage as sn
 from PIL import Image
-from tqdm import tqdm
+import tqdm
 from model_simulated_RGB101 import get_testing_model_resnet101
 from human_seg.human_seg_gt import human_seg_combine_argmax
-
 
 right_part_idx = [2, 3, 4,  8,  9, 10, 14, 16]
 left_part_idx =  [5, 6, 7, 11, 12, 13, 15, 17]
