@@ -206,7 +206,7 @@ if __name__ == '__main__':
 
    
     # generate image with body parts
-    for filename in os.listdir(args.input_folder):
+    for filename in tqdm.tqdm(sorted(os.listdir(args.input_folder))):
         if filename.endswith(".png") or filename.endswith(".jpg"):
             print(args.input_folder+'/'+filename)
             seg = process(args.input_folder+'/'+filename, params, model_params)
