@@ -215,9 +215,12 @@ if __name__ == '__main__':
             seg_max_thres = (seg_max > 0.1).astype(np.uint8)
             seg_argmax *= seg_max_thres
             seg_canvas = human_seg_combine_argmax(seg_argmax)
+
+            # Only need the segmented mask, setting cur_canvas weight to 
+            # 0 for now.
             cur_canvas = cv2.imread(args.input_folder+'/'+filename)
-            canvas = cv2.addWeighted(seg_canvas, 0.6, cur_canvas, 0.4, 0)
-            filename = '%s/%s.jpg'%(args.output_folder,'seg_'+filename)
+            canvas = cv2.addWeighted(seg_canvas, 1, cur_canvas, 0, 0)
+            filename = '%s/%s.png'%(args.output_folder,'seg_'+filename)
             cv2.imwrite(filename, canvas) 
 
 
